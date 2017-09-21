@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "Parse JSON as Typed Instances in TypeScript",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.ts"
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

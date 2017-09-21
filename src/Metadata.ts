@@ -11,12 +11,15 @@ import * as getParameterNames from 'get-parameter-names';
  */
 export class ConstructorMetadata {
 
+  target: Newable;
+
   // required metadata
   _names: string[];
-  _types: Newable[];
-  _elementTypes: { [s: number]: Newable; } = [];
+  _types: Newable[] = [];
+  _elementTypes: { [s: number]: Newable; } = {};
 
   constructor(target: Newable) {
+    this.target = target;
     this.setNames(getParameterNames(target));
   }
 
@@ -32,11 +35,8 @@ export class ConstructorMetadata {
     this._elementTypes[index] = elementType;
   }
 
-  getParameterMetadataByName(name: string): ParameterMetadata {
-
-    const index = this._names.indexOf(name);
-
-    return this.getParameterMetadataByIndex(index);
+  hasTypeInformation(): boolean {
+    return this._types.length > 0 || Object.keys(this._elementTypes).length > 0;
   }
 
   getParameterMetadataByIndex(index: number): ParameterMetadata {
@@ -45,11 +45,11 @@ export class ConstructorMetadata {
       return;
     }
 
-    if (Helper.isUndefined(this._types)) {
-      throw new Error(
-        'Reflection metadata is missing.  Please make sure that ' +
-        '"emitDecoratorMetadata" is set to true in tsconfig.json.');
-    }
+    // if (Helper.isUndefined(this._types)) {
+    //   throw new Error(
+    //     `@Serializable() is missing from ${this.target.name || 'Anonymous'}.  ` +
+    //     `Constructor metadata cannot be determined.`);
+    // }
 
     return new ParameterMetadata(index, this._names[index], this._types[index], this._elementTypes[index]);
   }
@@ -94,5 +94,5 @@ export class ParameterMetadata {
 
   get name(): string { return this._name };
 
-  get elementType(): { new(): any } { return this._elementType };
+  get elementType(): Newable { return this._elementType };
 }
