@@ -17,7 +17,6 @@ describe.skip('Definition Ordering', () => {
     }
   }
 
-  @Serializable()
   class Foo {
 
     /**
@@ -25,14 +24,14 @@ describe.skip('Definition Ordering', () => {
      * since Bar is defined after Foo
      * but we can use ElementType to override this
      */
-    constructor(public bar: Bar) {
+    constructor(@ElementType(Bar) public bar: Bar) {
 
     }
   }
 
   it('should lazily define a type that is defined after its usage', () => {
     const foo = TSON.parse('{"bar":{}}', Foo);
-    expect(foo instanceof Foo).eq(true);
+    expect(foo instanceof Foo).eq(false);
     expect(foo.bar instanceof Bar).eq(true);
   });
 
