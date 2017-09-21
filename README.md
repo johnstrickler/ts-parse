@@ -1,7 +1,9 @@
+Parse JSON as Typed Instances in TypeScript
 
-# TS Parse
+John Strickler
+strickjb@gmail.com
 
-Strongly-Typed JSON Parsing.
+2017-09-21
 
 ## Installation
 

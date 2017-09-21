@@ -1,7 +1,7 @@
 {
   "name": "ts-parse",
   "version": "0.0.2",
-  "description": "Constructor-based injection to create actual class instances from JSON",
+  "description": "Parse JSON as Typed Instances in TypeScript",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
@@ -9,6 +9,15 @@
     "type": "git",
     "url": "git+https://github.com/johnstrickler/ts-parse.git"
   },
+  "keywords": [
+    "typescript",
+    "JSON",
+    "parse",
+    "typed",
+    "classes",
+    "deserialize",
+    "instance"
+  ],
   "author": "John Strickler",
   "license": "MIT",
   "bugs": {
