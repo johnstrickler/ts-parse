@@ -5,8 +5,6 @@ Strongly-Typed JSON Parsing.
 
 ## Installation
 
-// TODO need a new package name that doesn't exist on NPM registry
-
 `npm install ts-parse`
 
 ## Prereqs
