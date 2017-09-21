@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { TSON } from '../src/Tson';
-import { ElementType, Model } from '../src/Decorators';
+import { ElementType, Serializable } from '../src/Decorators';
 
 describe('Arrays', () => {
 
-  @Model()
+  @Serializable()
   class Foo {
 
   }
@@ -32,12 +32,12 @@ describe('Arrays', () => {
 
 describe('Typed Array Properties', () => {
 
-  @Model()
+  @Serializable()
   class Bar {
 
   }
 
-  @Model()
+  @Serializable()
   class Foo {
     constructor(@ElementType(Bar) public bars: Bar[]) {
 
@@ -45,7 +45,7 @@ describe('Typed Array Properties', () => {
   }
 
 
-  @Model()
+  @Serializable()
   class Foo2 {
     constructor(public bars: Bar[]) {
 
@@ -77,7 +77,7 @@ describe('Typed Array Properties', () => {
 
 describe('Multi-dimensional Arrays', () => {
 
-  @Model()
+  @Serializable()
   class Bar {
 
   }

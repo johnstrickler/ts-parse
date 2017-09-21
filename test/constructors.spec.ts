@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { TSON } from '../src/Tson';
-import { Model } from '../src/Decorators';
+import { Serializable } from '../src/Decorators';
 
 describe('Constructors', () => {
 
-  @Model()
+  @Serializable()
   class Foo {
     constructor(public bar: string, public baz: number) {
 

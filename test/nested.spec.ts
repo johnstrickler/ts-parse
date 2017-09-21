@@ -1,24 +1,24 @@
 import { expect } from 'chai';
 import { TSON } from '../src/Tson';
-import { Model } from '../src/Decorators';
+import { Serializable } from '../src/Decorators';
 
 describe('Nested Objects', () => {
 
-  @Model()
+  @Serializable()
   class Toy {
     constructor() {
 
     }
   }
 
-  @Model()
+  @Serializable()
   class Child {
     constructor(public favoriteToy: Toy) {
 
     }
   }
 
-  @Model()
+  @Serializable()
   class Parent {
     constructor(public child: Child) {
     }

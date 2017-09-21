@@ -1,15 +1,15 @@
 import { expect } from 'chai';
 import { TSON } from '../src/Tson';
-import { Model } from '../src/Decorators';
+import { Serializable } from '../src/Decorators';
 
 describe('Extra Properties', () => {
 
-  @Model()
+  @Serializable()
   class Baz {
 
   }
 
-  @Model()
+  @Serializable()
   class Foo {
 
     public extraArg: Baz;

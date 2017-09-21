@@ -5,7 +5,7 @@ import { ConstructorMetadata } from './Metadata';
 /**
  * ElementType Decorator
  *
- * ElementType is a shim to a proposed metadata attribute that exposes the inner type of an array.
+ * ElementType exposes an Array's inner type.
  *
  * See: https://github.com/Microsoft/TypeScript/issues/7169
  *
@@ -20,12 +20,12 @@ export function ElementType(type: Newable) {
 }
 
 /**
- * Model Decorator
+ * Serializable Decorator
  *
  * @returns {(target: Newable) => any}
  * @constructor
  */
-export function Model() {
+export function Serializable() {
   return (target: Newable) => {
 
     const parameterTypes = Reflect.getOwnMetadata("design:paramtypes", target);

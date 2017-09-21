@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { TSON } from '../src/Tson';
-import { Model } from '../src/Decorators';
+import { Serializable } from '../src/Decorators';
 
 describe('Basics', () => {
 
-  @Model()
+  @Serializable()
   class Foo {
 
   }
@@ -22,11 +22,11 @@ describe('Basics', () => {
     bar = TSON.parse(json, Bar);
   });
 
-  it('should instantiate Foo because it is decorated with @Model', () => {
+  it('should instantiate Foo because it is decorated with @Serializable', () => {
     expect(foo instanceof Foo).eq(true);
   });
 
-  it('should not instantiate Bar because it is not decorated with @Model', () => {
+  it('should not instantiate Bar because it is not decorated with @Serializable', () => {
     expect(bar instanceof Bar).eq(false);
   });
 

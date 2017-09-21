@@ -6,6 +6,10 @@ export const CONSTRUCTOR_METADATA = Symbol('Constructors');
 export type Newable = { new(...x): any };
 export type TypedNewable<T> = { new(...x): T };
 
+const configuration = {
+
+};
+
 /**
  * Parses JSON or an object literal to a typed instance
  *

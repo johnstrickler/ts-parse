@@ -29,7 +29,7 @@ Typed parsing utilizes constructor-based injection to create actual class instan
 For example:
 
 ```ts
-@Model
+@Serializable
 class Address {
 
   constructor(private city: string, private state: string, private zip: string) {
@@ -61,7 +61,7 @@ Array support is built in but requires a cast for compile-time type support.  Th
 support a simplified API without creating extra parsing methods to support types.
 
 ```ts
-@Model
+@Serializable
 class Foo { }
 
 const json = "[{},{}]";
@@ -72,7 +72,7 @@ foos[0] instanceof Foo; // true
 ```
 
 ```ts
-@Model
+@Serializable
 class Bar { }
 
 const json = "[[{},{}]]";
