@@ -1,5 +1,5 @@
 
-# TSON
+# TS Parse
 
 Strongly-Typed JSON Parsing.
 
@@ -7,7 +7,7 @@ Strongly-Typed JSON Parsing.
 
 // TODO need a new package name that doesn't exist on NPM registry
 
-`npm install tson`
+`npm install ts-parse`
 
 ## Prereqs
 
@@ -24,7 +24,7 @@ Strongly-Typed JSON Parsing.
 
 ## Approach
 
-TSON utilizes constructor-based dependency injection to create actual class instances from JSON or plain JavaScript objects.  The [Reflect Metadata](https://github.com/rbuckton/reflect-metadata) shim, which is currently a ECMAScript proposal, exposes the type information of a constructor's parameters making it possible to instantiate objects from their real constructors. 
+Typed parsing utilizes constructor-based injection to create actual class instances from JSON or plain JavaScript objects.  The [Reflect Metadata](https://github.com/rbuckton/reflect-metadata) shim, which is currently a ECMAScript proposal, exposes the type information of a constructor's parameters making it possible to instantiate objects from their real constructors. 
 
 For example:
 
@@ -115,7 +115,6 @@ bars[0][0] instanceof Bar; // true
 
 ## Alternative Approach
 
-TSON utilizes construction injection to create class instances.  
 Another approach is to creating instances would be member injection which this project does not support. 
 
 Tradeoffs and difficulties to field assignment:

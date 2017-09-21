@@ -1,20 +1,20 @@
 {
-  "name": "tson",
+  "name": "ts-parse",
   "version": "0.0.1",
-  "description": "Parse JSON into typed class instances",
+  "description": "Constructor-based injection to create actual class instances from JSON",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johnstrickler/tson.git"
+    "url": "git+https://github.com/johnstrickler/ts-parse.git"
   },
   "author": "John Strickler",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/johnstrickler/tson/issues"
+    "url": "https://github.com/johnstrickler/ts-parse/issues"
   },
-  "homepage": "https://github.com/johnstrickler/tson",
+  "homepage": "https://github.com/johnstrickler/ts-parse",
   "devDependencies": {
     "@types/chai": "^4.0.4",
     "@types/mocha": "^2.2.43",
