@@ -1,6 +1,6 @@
 {
   "name": "ts-parse",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Constructor-based injection to create actual class instances from JSON",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.ts"
