@@ -1,7 +1,6 @@
 import { ConstructorMetadata, ParameterMetadata } from './Metadata';
 import { Helper } from './Helper';
-import * as getParameterNames from 'get-parameter-names';
-import "reflect-metadata"; // TODO needed?
+import "reflect-metadata";
 
 export const CONSTRUCTOR_METADATA = Symbol('Constructors');
 
@@ -18,11 +17,6 @@ const BOXED_PRIMITIVES = {
 const configuration = {
   strict: false
 };
-
-function argsByName() {
-
-}
-
 
 /**
  * Parses JSON or an object literal to a typed instance
@@ -51,11 +45,10 @@ function parse<T>(json: any, type: Newable<T>): T {
   }
 
   const constructorMetadata = ConstructorMetadata.getMetadata(type);
-  const parameterNames = constructorMetadata.getAllParameterMetadata().map(x => x.name);
 
   if (BOXED_PRIMITIVES[typeof json]) {
 
-    if (parameterNames.length === 1) {
+    if (constructorMetadata.getNames().length === 1) {
 
       // useful for constructing objects that take a primitive
       // as a parameter such as Dates, Moments, ...
@@ -75,7 +68,7 @@ function parse<T>(json: any, type: Newable<T>): T {
         return parse(json[parameterMetadata.name], parameterMetadata.elementType);
       });
 
-  const extraProperties = Helper.filter(json, parameterNames);
+  const extraProperties = Helper.filter(json, constructorMetadata.getNames());
   const instance = new type(...constructorArgs);
   Object.assign(instance, extraProperties);
 

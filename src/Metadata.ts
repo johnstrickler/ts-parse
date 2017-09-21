@@ -20,11 +20,7 @@ export class ConstructorMetadata {
 
   constructor(target: Newable) {
     this.target = target;
-    this.setNames(getParameterNames(target));
-  }
-
-  private setNames(names: string[]) {
-    this._names = [].concat(names);
+    this._names = getParameterNames(target);
   }
 
   setTypes(types: Newable[]) {
@@ -35,8 +31,8 @@ export class ConstructorMetadata {
     this._elementTypes[index] = elementType;
   }
 
-  hasTypeInformation(): boolean {
-    return this._types.length > 0 || Object.keys(this._elementTypes).length > 0;
+  getNames(): string[] {
+    return [].concat(this._names);
   }
 
   getParameterMetadataByIndex(index: number): ParameterMetadata {
@@ -45,6 +41,7 @@ export class ConstructorMetadata {
       return;
     }
 
+    // TODO in STRICT MODE, throw error
     // if (Helper.isUndefined(this._types)) {
     //   throw new Error(
     //     `@Serializable() is missing from ${this.target.name || 'Anonymous'}.  ` +
@@ -56,12 +53,6 @@ export class ConstructorMetadata {
 
   getAllParameterMetadata(): ParameterMetadata[] {
     return this._names.map((name, index) => this.getParameterMetadataByIndex(index));
-  }
-
-
-  // check for the present of metadata without the risk of inadvertantly creating it
-  static hasMetadata(target: Newable): boolean {
-    return Reflect.hasOwnMetadata(CONSTRUCTOR_METADATA, target);
   }
 
   // gets the current metadata object for a constructor
