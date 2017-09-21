@@ -1,10 +1,5 @@
 Parse JSON as Typed Instances in TypeScript
 
-John Strickler
-strickjb@gmail.com
-
-2017-09-21
-
 ## Installation
 
 `npm install ts-parse`
