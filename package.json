@@ -1,0 +1,31 @@
+{
+  "name": "tson",
+  "version": "0.0.1",
+  "description": "Parse JSON into typed class instances",
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnstrickler/tson.git"
+  },
+  "author": "John Strickler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johnstrickler/tson/issues"
+  },
+  "homepage": "https://github.com/johnstrickler/tson",
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.43",
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.5.2",
+    "typings": "^2.1.1"
+  },
+  "dependencies": {
+    "get-parameter-names": "^0.3.0",
+    "reflect-metadata": "^0.1.10"
+  }
+}
