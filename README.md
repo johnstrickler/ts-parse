@@ -52,8 +52,8 @@ address.getCityStateZip(); // "Richmond, VA 23230"
 
 ## Array Support
 
-Array support is built in but requires a cast for compile-time type support.  This is required to 
-support a simplified API without creating extra parsing methods to support types.
+Array support is built-in, but, it requires a cast for compile-time type support.  This is necessary to 
+support a simplified API and it eliminates the needs for an extra parsing method for Nth-degree Arrays (e.g. parseArray, parseArrayOfArrays, etc.).
 
 ```ts
 @Serializable()
