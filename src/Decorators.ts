@@ -1,4 +1,4 @@
-import { Newable } from './Tson';
+import { DeferredNewable, Newable } from './Tson';
 import { Helper } from './Helper';
 import { ConstructorMetadata } from './Metadata';
 
@@ -13,7 +13,7 @@ import { ConstructorMetadata } from './Metadata';
  * @returns {(target: Newable, propertyKey: string, parameterIndex: number) => any}
  * @constructor
  */
-export function ElementType(type: Newable) {
+export function ElementType(type: Newable | DeferredNewable) {
   return (target: Newable, propertyKey: string, parameterIndex: number) => {
     ConstructorMetadata.getMetadata(target).setElementType(parameterIndex, type);
   };

@@ -5,18 +5,26 @@ import "reflect-metadata";
 export const CONSTRUCTOR_METADATA = Symbol('Constructors');
 
 export type Newable<T = any> = { new(...x): T };
+export type DeferredNewable<T = any> = () => Newable<T>;
 
-const BOXED_PRIMITIVES = {
+const TypeOfPrimitiveWrappers = {
   boolean: Boolean,
   number: Number,
   string: String
-}
+};
 
+const PrimitiveWrappers = new Map<Newable, Function>([
+  [Boolean, (v) => !!v],
+  [Number, (v) => +v],
+  [String, (v) => Helper.isUndefinedOrNull(v) ? '' : v + '']
+]);
 
 // TODO implement strict typing where every object has to be constructed
-const configuration = {
-  strict: false
-};
+// const configuration = {
+//   strict: false
+// };
+
+const definitions = [];
 
 /**
  * Parses JSON or an object literal to a typed instance
@@ -32,6 +40,7 @@ function parse<T>(json: any, type: Newable<T>): T {
   }
 
   if (Helper.isUndefinedOrNull(type)) {
+    // TODO strict mode - should we fail? not knowing the type should be okay
     return json;
   }
 
@@ -40,19 +49,24 @@ function parse<T>(json: any, type: Newable<T>): T {
     return json.map(o => parse(o, type)) as any as T;
   }
 
-  if (BOXED_PRIMITIVES[typeof json] === type) {
+  if (TypeOfPrimitiveWrappers[typeof json] === type) {
     return json;
   }
 
   const constructorMetadata = ConstructorMetadata.getMetadata(type);
 
-  if (BOXED_PRIMITIVES[typeof json]) {
+  if (TypeOfPrimitiveWrappers[typeof json]) {
 
-    if (constructorMetadata.getNames().length === 1) {
+    // TODO strict mode - primitive conversion
+    if (PrimitiveWrappers.has(type)) {
+      return PrimitiveWrappers.get(type)(json);
+    }
+
+    if (constructorMetadata.getNames().length < 2) {
 
       // useful for constructing objects that take a primitive
       // as a parameter such as Dates, Moments, ...
-      // TODO fail in STRICT MODE - we are constructing based on names where types MIGHT mismatch
+      // TODO fail in STRICT MODE - we are constructing where types MIGHT mismatch
       return new type(json);
     } else {
 
@@ -68,7 +82,7 @@ function parse<T>(json: any, type: Newable<T>): T {
         return parse(json[parameterMetadata.name], parameterMetadata.elementType);
       });
 
-  const extraProperties = Helper.filter(json, constructorMetadata.getNames());
+  const extraProperties = Helper.excludeKeys(json, constructorMetadata.getNames());
   const instance = new type(...constructorArgs);
   Object.assign(instance, extraProperties);
 

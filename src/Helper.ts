@@ -1,4 +1,3 @@
-
 /**
  * Utility functions
  */
@@ -12,9 +11,13 @@ export class Helper {
     return args.some((o) => typeof o === 'undefined' || o === null);
   }
 
-  static filter(json: object, excludedKeys: string[]) {
+  static values(obj: {}) {
+    return Object.keys(obj).map(key => obj[key]);
+  }
+
+  static excludeKeys(json: object, keys: string[]) {
     return Object.keys(json)
-      .filter(key => !excludedKeys.includes(key))
+      .filter(key => !keys.includes(key))
       .reduce((obj, key) => {
         obj[key] = json[key];
         return obj;

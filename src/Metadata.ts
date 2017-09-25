@@ -1,4 +1,4 @@
-import { CONSTRUCTOR_METADATA, Newable } from './Tson';
+import { CONSTRUCTOR_METADATA, DeferredNewable, Newable } from './Tson';
 import { Helper } from './Helper';
 import * as getParameterNames from 'get-parameter-names';
 
@@ -16,18 +16,31 @@ export class ConstructorMetadata {
   // required metadata
   _names: string[];
   _types: Newable[] = [];
-  _elementTypes: { [s: number]: Newable; } = {};
+  _elementTypes: { [s: number]: (Newable | DeferredNewable) } = {};
 
   constructor(target: Newable) {
     this.target = target;
     this._names = getParameterNames(target);
   }
 
+  // if one does not exist, then one is created and the metadata is defined
+  static getMetadata(target: Newable): ConstructorMetadata {
+
+    let constructorMetadata = Reflect.getOwnMetadata(CONSTRUCTOR_METADATA, target);
+
+    if (Helper.isUndefined(constructorMetadata)) {
+      constructorMetadata = new ConstructorMetadata(target);
+      Reflect.defineMetadata(CONSTRUCTOR_METADATA, constructorMetadata, target);
+    }
+
+    return constructorMetadata;
+  }
+
   setTypes(types: Newable[]) {
     this._types = [].concat(types);
   }
 
-  setElementType(index: number, elementType: Newable) {
+  setElementType(index: number, elementType: Newable | DeferredNewable) {
     this._elementTypes[index] = elementType;
   }
 
@@ -48,25 +61,20 @@ export class ConstructorMetadata {
     //     `Constructor metadata cannot be determined.`);
     // }
 
-    return new ParameterMetadata(index, this._names[index], this._types[index], this._elementTypes[index]);
-  }
+    let elementType = this._elementTypes[index];
 
-  getAllParameterMetadata(): ParameterMetadata[] {
-    return this._names.map((name, index) => this.getParameterMetadataByIndex(index));
+    // infer an anonymous function as being a wrapper function and not a type
+    if (elementType && elementType.name === '') {
+      elementType = (elementType as DeferredNewable)();
+    }
+
+    return new ParameterMetadata(index, this._names[index], this._types[index], elementType as Newable);
   }
 
   // gets the current metadata object for a constructor
-  // if one does not exist, then one is created and the metadata is defined
-  static getMetadata(target: Newable): ConstructorMetadata {
 
-    let constructorMetadata = Reflect.getOwnMetadata(CONSTRUCTOR_METADATA, target);
-
-    if (Helper.isUndefined(constructorMetadata)) {
-      constructorMetadata = new ConstructorMetadata(target);
-      Reflect.defineMetadata(CONSTRUCTOR_METADATA, constructorMetadata, target);
-    }
-
-    return constructorMetadata;
+  getAllParameterMetadata(): ParameterMetadata[] {
+    return this._names.map((name, index) => this.getParameterMetadataByIndex(index));
   }
 }
 

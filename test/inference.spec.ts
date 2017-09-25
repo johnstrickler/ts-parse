@@ -5,8 +5,10 @@ import { ElementType, Serializable } from '../src/Decorators';
 describe('Inference', () => {
 
   class Zero {
+    public arguments;
     constructor() {
-
+      // capture passed argument to test
+      this.arguments = arguments;
     }
   }
 
@@ -22,10 +24,10 @@ describe('Inference', () => {
     }
   }
 
-  it('(string) should return a raw value given a zero-argument constructor', () => {
+  it('(string) should instantiate a typed class given a zero-argument constructor', () => {
     let zero = TSON.parse('"a"', Zero);
-    expect(zero instanceof Zero).eq(false);
-    expect(zero).eq("a");
+    expect(zero instanceof Zero).eq(true);
+    expect(zero.arguments[0]).eq('a');
   });
 
   it('(string) should instantiate a typed class given a single-argument constructor', () => {
@@ -40,10 +42,10 @@ describe('Inference', () => {
     expect(many).eq("c");
   });
 
-  it('(number) should return a raw value given a zero-argument constructor', () => {
+  it('(number) should instantiate a typed class given a zero-argument constructor', () => {
     let zero = TSON.parse('1', Zero);
-    expect(zero instanceof Zero).eq(false);
-    expect(zero).eq(1);
+    expect(zero instanceof Zero).eq(true);
+    expect(zero.arguments[0]).eq(1);
   });
 
   it('(number) should instantiate a typed class given a single-argument constructor', () => {
@@ -58,10 +60,10 @@ describe('Inference', () => {
     expect(many).eq(3);
   });
 
-  it('(boolean) should return a raw value given a zero-argument constructor', () => {
+  it('(boolean) should instantiate a typed class given a zero-argument constructor', () => {
     let zero = TSON.parse('true', Zero);
-    expect(zero instanceof Zero).eq(false);
-    expect(zero).eq(true);
+    expect(zero instanceof Zero).eq(true);
+    expect(zero.arguments[0]).eq(true);
   });
 
   it('(boolean) should instantiate a typed class given a single-argument constructor', () => {
