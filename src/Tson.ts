@@ -23,7 +23,10 @@ const PRIMITIVE_TYPES = {
 //   strict: false
 // };
 
-
+// TODO target environments
+// Browser - (angular4)
+// Node/Express ?
+// ?
 
 /**
  * Parses JSON or an object literal to a typed instance

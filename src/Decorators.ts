@@ -50,8 +50,7 @@ export function Serializable() {
     }
 
     if (Helper.isUndefined(parameterTypes)) {
-      // TODO constructor is missing.  if extraProperties is configured off then this will be an empty object.
-      // How can feedback be given?  can a report be created by TSC?
+      // TODO explicit constructor is missing. assume no-args constructor
     }
   };
 }

@@ -15,7 +15,6 @@ export class ConstructorMetadata {
 
   target: Newable;
 
-  // required metadata
   _names: string[];
   _types: Newable[] = [];
   _elementTypes: { [s: number]: (Newable | DeferredNewable) } = {};
@@ -72,8 +71,6 @@ export class ConstructorMetadata {
 
     return new ParameterMetadata(index, this._names[index], this._types[index], elementType as Newable);
   }
-
-  // gets the current metadata object for a constructor
 
   getAllParameterMetadata(): ParameterMetadata[] {
     return this._names.map((name, index) => this.getParameterMetadataByIndex(index));
