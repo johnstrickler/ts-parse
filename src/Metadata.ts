@@ -1,6 +1,8 @@
-import { CONSTRUCTOR_METADATA, DeferredNewable, Newable } from './Tson';
+import { DeferredNewable, Newable } from './Tson';
 import { Helper } from './Helper';
 import * as getParameterNames from 'get-parameter-names';
+
+export const CONSTRUCTOR_METADATA = Symbol('Constructors');
 
 /**
  * ConstructorMetadata

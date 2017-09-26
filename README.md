@@ -1,4 +1,4 @@
-Parse JSON as Typed Instances in TypeScript
+Parse JSON as typed instances.
 
 ## Installation
 

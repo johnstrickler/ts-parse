@@ -3,45 +3,6 @@ import { expect } from 'chai';
 
 describe('Types', () => {
 
- // not working.
-
- // could pass the primitive without checking the number of constructor args
- // side effects would be bad.  need to enable strict mode from the start
- // and start a definitions files
-
-
-  // Strict mode (default) - no inferrence
-
-  // TODO Moment
-
-  // TODO RegEx
-
-  // TODO Map
-  // new <K, V>(entries?: [K, V][]): Map<K, V>;
-  // new <K, V>(iterable: Iterable<[K, V]>): Map<K, V>;
-
-  // TODO WeakMap
-  // new <K extends object, V>(entries?: [K, V][]): WeakMap<K, V>;
-  //new <K extends object, V>(iterable: Iterable<[K, V]>): WeakMap<K, V>;
-
-  // TODO Set
-  // new <T>(values?: T[]): Set<T>;
-  // new <T>(iterable: Iterable<T>): Set<T>;
-
-  // TODO WeakSet
-  // new <T extends object>(values?: T[]): WeakSet<T>;
-  // new <T extends object>(iterable: Iterable<T>): WeakSet<T>;
-
-  it('should serialize a Date instance from a string', () => {
-    let date = TSON.parse('"2017-09-21T19:45:48.560Z"', Date);
-    expect(date instanceof Date).eq(true);
-  });
-
-  it('should serialize a Date instance from a number', () => {
-    let date = TSON.parse('1506023148560', Date);
-    expect(date instanceof Date).eq(true);
-  });
-
   it('should serialize a string primitive from a string', () => {
     let string = TSON.parse('"foobar"', String);
     expect(typeof string).eq('string');
@@ -96,15 +57,26 @@ describe('Types', () => {
     expect(bool).eq(false);
   });
 
+  it('should serialize a Date instance from a string', () => {
+    let date = TSON.parse('"2017-09-21T19:45:48.560Z"', Date);
+    expect(date instanceof Date).eq(true);
+  });
 
-
-  // TODO Wrapper !== primitive.
-  it('should serialize a Moment instance', () => {
-
+  it('should serialize a Date instance from a number', () => {
+    let date = TSON.parse('1506023148560', Date);
+    expect(date instanceof Date).eq(true);
   });
 
   it('should serialize a Map instance', () => {
+    let map = TSON.parse('[[1,"a"],[2,"b"]]', Map);
+    expect(map instanceof Map).eq(true);
+    expect(map.get(1)).eq('a');
+    expect(map.get(2)).eq('b');
+  });
 
+  it('should serialize a Set instance', () => {
+    let set = TSON.parse('[1,"a",2,"b"]', Set);
+    expect(set instanceof Set).eq(true);
   });
 
 });

@@ -2,29 +2,28 @@ import { ConstructorMetadata, ParameterMetadata } from './Metadata';
 import { Helper } from './Helper';
 import "reflect-metadata";
 
-export const CONSTRUCTOR_METADATA = Symbol('Constructors');
-
 export type Newable<T = any> = { new(...x): T };
+
 export type DeferredNewable<T = any> = () => Newable<T>;
 
-const TypeOfPrimitiveWrappers = {
-  boolean: Boolean,
-  number: Number,
-  string: String
-};
-
-const PrimitiveWrappers = new Map<Newable, Function>([
+const PRIMITIVE_CONVERSIONS = new Map<Newable, Function>([
   [Boolean, (v) => !!v],
   [Number, (v) => +v],
   [String, (v) => Helper.isUndefinedOrNull(v) ? '' : v + '']
 ]);
+
+const PRIMITIVE_TYPES = {
+  boolean: Boolean,
+  number: Number,
+  string: String
+};
 
 // TODO implement strict typing where every object has to be constructed
 // const configuration = {
 //   strict: false
 // };
 
-const definitions = [];
+
 
 /**
  * Parses JSON or an object literal to a typed instance
@@ -35,31 +34,39 @@ const definitions = [];
  */
 function parse<T>(json: any, type: Newable<T>): T {
 
+  // check first
   if (Helper.isUndefinedOrNull(json)) {
     return null;
   }
 
+  // do not recurse further
   if (Helper.isUndefinedOrNull(type)) {
     // TODO strict mode - should we fail? not knowing the type should be okay
     return json;
   }
 
+  // do before array-check
+  if (Helper.isMapOrSet(type)) {
+    return new type(json);
+  }
+
+  //
   if (Array.isArray(json)) {
     // force to a false type assertion
     return json.map(o => parse(o, type)) as any as T;
   }
 
-  if (TypeOfPrimitiveWrappers[typeof json] === type) {
+  if (PRIMITIVE_TYPES[typeof json] === type) {
     return json;
   }
 
   const constructorMetadata = ConstructorMetadata.getMetadata(type);
 
-  if (TypeOfPrimitiveWrappers[typeof json]) {
+  if (PRIMITIVE_TYPES[typeof json]) {
 
     // TODO strict mode - primitive conversion
-    if (PrimitiveWrappers.has(type)) {
-      return PrimitiveWrappers.get(type)(json);
+    if (PRIMITIVE_CONVERSIONS.has(type)) {
+      return PRIMITIVE_CONVERSIONS.get(type)(json);
     }
 
     if (constructorMetadata.getNames().length < 2) {
@@ -70,8 +77,8 @@ function parse<T>(json: any, type: Newable<T>): T {
       return new type(json);
     } else {
 
-      // can't infer, return the (untyped) raw value
-      // TODO STRICT MODE [primitive-type-mismatch] - the Type is different from the JSON raw value
+      // Can't infer because the JSON is a primitive and type has more than 1 argument
+      // TODO STRICT MODE - we have a Type but it could not be serialized
       return json;
     }
   }

@@ -11,8 +11,8 @@ export class Helper {
     return args.some((o) => typeof o === 'undefined' || o === null);
   }
 
-  static values(obj: {}) {
-    return Object.keys(obj).map(key => obj[key]);
+  static isMapOrSet(type: any): boolean {
+    return [Map, WeakMap, Set, WeakSet].indexOf(type) > -1;
   }
 
   static excludeKeys(json: object, keys: string[]) {
