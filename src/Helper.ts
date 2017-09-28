@@ -15,10 +15,10 @@ export class Helper {
     return [Map, WeakMap, Set, WeakSet].indexOf(type) > -1;
   }
 
-  static excludeKeys(json: object, keys: string[]) {
+  static excludeKeys(json: any, keys: string[]) {
     return Object.keys(json)
       .filter(key => !keys.includes(key))
-      .reduce((obj, key) => {
+      .reduce((obj: any, key) => {
         obj[key] = json[key];
         return obj;
       }, {});

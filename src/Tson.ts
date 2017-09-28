@@ -2,21 +2,21 @@ import { ConstructorMetadata, ParameterMetadata } from './Metadata';
 import { Helper } from './Helper';
 import "reflect-metadata";
 
-export type Newable<T = any> = { new(...x): T };
+export type Newable<T = any> = { new(...x: any[]): T };
 
 export type DeferredNewable<T = any> = () => Newable<T>;
 
 const PRIMITIVE_CONVERSIONS = new Map<Newable, Function>([
-  [Boolean, (v) => !!v],
-  [Number, (v) => +v],
-  [String, (v) => Helper.isUndefinedOrNull(v) ? '' : v + '']
+  [Boolean, (v: any) => !!v],
+  [Number, (v: any) => +v],
+  [String, (v: any) => Helper.isUndefinedOrNull(v) ? '' : v + '']
 ]);
 
-const PRIMITIVE_TYPES = {
-  boolean: Boolean,
-  number: Number,
-  string: String
-};
+const PRIMITIVE_TYPES = new Map<string, Newable>([
+  ["boolean", Boolean],
+  ["number", Number],
+  ["string", String]
+]);
 
 // TODO implement strict typing where every object has to be constructed
 // const configuration = {
@@ -59,13 +59,13 @@ function parse<T>(json: any, type: Newable<T>): T {
     return json.map(o => parse(o, type)) as any as T;
   }
 
-  if (PRIMITIVE_TYPES[typeof json] === type) {
+  if (PRIMITIVE_TYPES.get(typeof json) === type) {
     return json;
   }
 
   const constructorMetadata = ConstructorMetadata.getMetadata(type);
 
-  if (PRIMITIVE_TYPES[typeof json]) {
+  if (PRIMITIVE_TYPES.has(typeof json)) {
 
     // TODO strict mode - primitive conversion
     if (PRIMITIVE_CONVERSIONS.has(type)) {
