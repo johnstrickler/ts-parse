@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { TSON } from '../src/Tson';
-import { ElementType, Serializable } from '../src/Decorators';
+import { ElementType, TSON } from '../index';
 
 describe('Element Type', () => {
 

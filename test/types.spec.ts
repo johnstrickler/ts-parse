@@ -1,5 +1,5 @@
-import { TSON } from '../src/Tson';
 import { expect } from 'chai';
+import { TSON } from '../index';
 
 describe('Types', () => {
 

@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { TSON } from '../src/Tson';
-import { Serializable } from '../src/Decorators';
+import { Serializable, TSON } from '../index';
 
 describe('Extra Properties', () => {
 

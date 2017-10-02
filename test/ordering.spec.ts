@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import { ElementType } from '../src/Decorators';
-import { TSON } from '../src/Tson';
+import { ElementType, TSON } from '../index';
 
 describe('Definition Order Workaround', () => {
 
