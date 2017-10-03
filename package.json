@@ -1,6 +1,6 @@
 {
   "name": "ts-parse",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Parse JSON as Typed Instances in TypeScript",
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
