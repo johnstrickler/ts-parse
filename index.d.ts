@@ -1,5 +1,7 @@
-/// <reference path="node_modules/reflect-metadata/reflect-metadata.d.ts" />
 import "reflect-metadata";
+/**       ^       **\
+ - LIBRARY EXPORTS -
+\**     _____     **/
 export declare const TSON: {
     parse: <T>(json: string, type: new (...x: any[]) => T) => T;
 };
