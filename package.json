@@ -5,6 +5,8 @@
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
+  "main": "index.js",
+  "typings": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johnstrickler/ts-parse.git"
