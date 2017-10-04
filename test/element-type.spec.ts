@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ElementType, TSON } from '../index';
+import { ConstructAs, TSON } from '../index';
 
 describe('Element Type', () => {
 
@@ -8,7 +8,7 @@ describe('Element Type', () => {
   }
 
   class Foo {
-    constructor(@ElementType(Bar) public bar: Bar) {
+    constructor(@ConstructAs(Bar) public bar: Bar) {
 
     }
   }
@@ -24,7 +24,7 @@ describe('Element Type', () => {
     expect(foo instanceof Foo).eq(true);
   });
 
-  it('infer constructor parameter from Element Type even without Serializable', () => {
+  it('infer constructor parameter from Element Type even without Constructable', () => {
     expect(foo.bar instanceof Bar).eq(true);
   });
 

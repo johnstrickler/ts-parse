@@ -1,14 +1,14 @@
 import { expect } from 'chai';
-import { Serializable, TSON } from '../index';
+import { Constructable, TSON } from '../index';
 
 describe('Extra Properties', () => {
 
-  @Serializable()
+  @Constructable()
   class Baz {
 
   }
 
-  @Serializable()
+  @Constructable()
   class Foo {
 
     public extraArg: Baz;

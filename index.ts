@@ -63,7 +63,7 @@ namespace Metadata {
       // TODO in STRICT MODE, throw error
       // if (Helper.isUndefined(this._types)) {
       //   throw new Error(
-      //     `@Serializable() is missing from ${this.target.name || 'Anonymous'}.  ` +
+      //     `@Constructable() is missing from ${this.target.name || 'Anonymous'}.  ` +
       //     `Constructor metadata cannot be determined.`);
       // }
   
@@ -140,11 +140,11 @@ namespace Parser {
   
     // do before array-check
     if (Helper.isMapOrSet(type)) {
-      return new type(json);
+      return Reflect.construct(type, [json]);
     }
   
     if (Array.isArray(json)) {
-      // force to a false type assertion
+      // necessary false type assertion
       return json.map(o => parse(o, type)) as any as T;
     }
   
@@ -166,7 +166,7 @@ namespace Parser {
         // useful for constructing objects that take a primitive
         // as a parameter such as Dates, Moments, ...
         // TODO fail in STRICT MODE - we are constructing where types MIGHT mismatch
-        return new type(json);
+        return Reflect.construct(type, [json]);
       } else {
   
         // Can't infer because the JSON is a primitive and type has more than 1 argument
@@ -182,7 +182,8 @@ namespace Parser {
         });
   
     const extraProperties = Helper.excludeKeys(json, constructorMetadata.getNames());
-    const instance = new type(...constructorArgs);
+    const instance = Reflect.construct(type, constructorArgs);
+    
     Object.assign(instance, extraProperties);
   
     return instance;
@@ -234,17 +235,16 @@ export const TSON = {
 };
 
 /**
- * ElementType Decorator
+ * ConstructAs Decorator
  *
- * ElementType exposes an Array's inner type.
+ * ConstructAs exposes an Array's inner type.
  *
  * See: https://github.com/Microsoft/TypeScript/issues/7169
  *
  * @param {{new(...x: any[]) => any} | (() => {new(...x: any[]) => any})} type - a type (or a function that returns a type) that can be called using `new`
  * @returns {(target: Newable, propertyKey: string, parameterIndex: number) => any}
- * @constructor
  */
-export function ElementType(type: { new(...x: any[]): any } | (() => { new(...x: any[]): any })) {
+export function ConstructAs(type: { new(...x: any[]): any } | (() => { new(...x: any[]): any })) {
   return (target: Newable, propertyKey: string, parameterIndex: number) => {
     Metadata.ConstructorMetadata.getMetadata(target).setElementType(parameterIndex, type);
   };
@@ -253,12 +253,11 @@ export function ElementType(type: { new(...x: any[]): any } | (() => { new(...x:
 
 
 /**
- * Serializable Decorator
+ * Constructable Decorator
  *
  * @returns {(target: {new(...x: any[]) => any}) => any}
- * @constructor
  */
-export function Serializable() {
+export function Constructable() {
   return (target: { new(...x: any[]): any }) => {
 
     const parameterTypes = Reflect.getOwnMetadata("design:paramtypes", target);
@@ -277,6 +276,7 @@ export function Serializable() {
           throw new Error(
             `Parameter type is undefined.  [class="${target.name}"] [parameter=${parameterMetadata.name}] [index=${index}] ` +
             `Dependency is defined after it is used (known bug with Reflection Metadata) ` +
+            `Use the @ConstructAs decorator with a deferred type function ex. @ConstructAs(() => SomeType)` +
             `See https://github.com/Microsoft/TypeScript/issues/4114`);
         }
       });

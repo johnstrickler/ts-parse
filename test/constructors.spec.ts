@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { Serializable, TSON } from '../index';
+import { Constructable, TSON } from '../index';
 
 describe('Constructors', () => {
 
-  @Serializable()
+  @Constructable()
   class Foo {
     constructor(public bar: string, public baz: number) {
 

@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { ElementType, Serializable, TSON } from '../index';
+import { ConstructAs, Constructable, TSON } from '../index';
 
 describe('Arrays', () => {
 
-  @Serializable()
+  @Constructable()
   class Foo {
 
   }
@@ -31,20 +31,20 @@ describe('Arrays', () => {
 
 describe('Typed Array Properties', () => {
 
-  @Serializable()
+  @Constructable()
   class Bar {
 
   }
 
-  @Serializable()
+  @Constructable()
   class Foo {
-    constructor(@ElementType(Bar) public bars: Bar[]) {
+    constructor(@ConstructAs(Bar) public bars: Bar[]) {
 
     }
   }
 
 
-  @Serializable()
+  @Constructable()
   class Foo2 {
     constructor(public bars: Bar[]) {
 
@@ -58,13 +58,13 @@ describe('Typed Array Properties', () => {
     foo = TSON.parse(json, Foo);
   });
 
-  it('should serialize typed objects in arrays when decorated with ElementType', () => {
+  it('should serialize typed objects in arrays when decorated with ConstructAs', () => {
     expect(Array.isArray(foo.bars)).eq(true);
     expect(foo.bars.length).eq(2);
     expect(foo.bars[0] instanceof Bar).eq(true);
   });
 
-  it('should not serialize typed objects in arrays when not decorated with ElementType', () => {
+  it('should not serialize typed objects in arrays when not decorated with ConstructAs', () => {
     const foo2 = TSON.parse(json, Foo2);
     expect(Array.isArray(foo2.bars)).eq(true);
     expect(foo2.bars.length).eq(2);
@@ -76,7 +76,7 @@ describe('Typed Array Properties', () => {
 
 describe('Multi-dimensional Arrays', () => {
 
-  @Serializable()
+  @Constructable()
   class Bar {
 
   }

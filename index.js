@@ -44,7 +44,7 @@ var Metadata;
             // TODO in STRICT MODE, throw error
             // if (Helper.isUndefined(this._types)) {
             //   throw new Error(
-            //     `@Serializable() is missing from ${this.target.name || 'Anonymous'}.  ` +
+            //     `@Constructable() is missing from ${this.target.name || 'Anonymous'}.  ` +
             //     `Constructor metadata cannot be determined.`);
             // }
             var elementType = this._elementTypes[index];
@@ -119,7 +119,7 @@ var Parser;
         }
         // do before array-check
         if (Helper.isMapOrSet(type)) {
-            return new type(json);
+            return Reflect.construct(type, [json]);
         }
         if (Array.isArray(json)) {
             // force to a false type assertion
@@ -138,7 +138,7 @@ var Parser;
                 // useful for constructing objects that take a primitive
                 // as a parameter such as Dates, Moments, ...
                 // TODO fail in STRICT MODE - we are constructing where types MIGHT mismatch
-                return new type(json);
+                return Reflect.construct(type, [json]);
             }
             else {
                 // Can't infer because the JSON is a primitive and type has more than 1 argument
@@ -151,20 +151,12 @@ var Parser;
             return parse(json[parameterMetadata.name], parameterMetadata.elementType);
         });
         var extraProperties = Helper.excludeKeys(json, constructorMetadata.getNames());
-        var instance = new (type.bind.apply(type, [void 0].concat(constructorArgs)))();
+        var instance = Reflect.construct(type, constructorArgs);
         Object.assign(instance, extraProperties);
         return instance;
     }
     Parser.parse = parse;
 })(Parser || (Parser = {})); // end parser namespace
-// TODO implement strict typing where every object has to be constructed
-// const configuration = {
-//   strict: false
-// };
-// TODO target environments
-// Browser - (angular4)
-// Node/Express ?
-// ?
 var Helper = /** @class */ (function () {
     function Helper() {
     }
@@ -209,29 +201,27 @@ exports.TSON = {
     }
 };
 /**
- * ElementType Decorator
+ * ConstructAs Decorator
  *
- * ElementType exposes an Array's inner type.
+ * ConstructAs exposes an Array's inner type.
  *
  * See: https://github.com/Microsoft/TypeScript/issues/7169
  *
  * @param {{new(...x: any[]) => any} | (() => {new(...x: any[]) => any})} type - a type (or a function that returns a type) that can be called using `new`
  * @returns {(target: Newable, propertyKey: string, parameterIndex: number) => any}
- * @constructor
  */
-function ElementType(type) {
+function ConstructAs(type) {
     return function (target, propertyKey, parameterIndex) {
         Metadata.ConstructorMetadata.getMetadata(target).setElementType(parameterIndex, type);
     };
 }
-exports.ElementType = ElementType;
+exports.ConstructAs = ConstructAs;
 /**
- * Serializable Decorator
+ * Constructable Decorator
  *
  * @returns {(target: {new(...x: any[]) => any}) => any}
- * @constructor
  */
-function Serializable() {
+function Constructable() {
     return function (target) {
         var parameterTypes = Reflect.getOwnMetadata("design:paramtypes", target);
         var constructorMetadata = Metadata.ConstructorMetadata.getMetadata(target);
@@ -242,6 +232,7 @@ function Serializable() {
                     var parameterMetadata = constructorMetadata.getParameterMetadataByIndex(index);
                     throw new Error("Parameter type is undefined.  [class=\"" + target.name + "\"] [parameter=" + parameterMetadata.name + "] [index=" + index + "] " +
                         "Dependency is defined after it is used (known bug with Reflection Metadata) " +
+                        "Use the @ConstructAs decorator with a deferred type function ex. @ConstructAs(() => SomeType)" +
                         "See https://github.com/Microsoft/TypeScript/issues/4114");
                 }
             });
@@ -251,5 +242,5 @@ function Serializable() {
         }
     };
 }
-exports.Serializable = Serializable;
+exports.Constructable = Constructable;
 //# sourceMappingURL=index.js.map

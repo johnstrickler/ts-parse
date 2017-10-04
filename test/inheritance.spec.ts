@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Serializable, TSON } from '../index';
+import { Constructable, TSON } from '../index';
 
 describe('Inheritance', () => {
 
@@ -9,7 +9,7 @@ describe('Inheritance', () => {
     }
   }
 
-  @Serializable()
+  @Constructable()
   class Rectangle extends Shape {
     constructor(public x: number, public y: number, borderSize: number) {
       super(borderSize);
@@ -20,7 +20,7 @@ describe('Inheritance', () => {
     }
   }
 
-  @Serializable()
+  @Constructable()
   class Square extends Rectangle {
     constructor(x: number, borderSize: number) {
       super(x, x, borderSize);

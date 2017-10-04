@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ElementType, TSON } from '../index';
+import { ConstructAs, TSON } from '../index';
 
 describe('Definition Order Workaround', () => {
 
@@ -7,7 +7,7 @@ describe('Definition Order Workaround', () => {
   // https://github.com/Microsoft/TypeScript/issues/4114
 
   class Foo {
-    constructor(@ElementType(() => Bar) public bar: Bar) {
+    constructor(@ConstructAs(() => Bar) public bar: Bar) {
     }
   }
 
