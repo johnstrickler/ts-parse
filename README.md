@@ -43,7 +43,7 @@ address instanceof Address; // true
 address.getCityStateZip(); // "Richmond, VA 23230"
 ```
 
-## Features and Gotchas
+## Features
 
 - Serialize JSON or POJOs to actual class instances
 - Instantiation through construction injection
