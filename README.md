@@ -89,12 +89,6 @@ Tradeoffs and difficulties to field assignment:
  - How to handle -> readonly, private, protected, const
 
 
-## Future Potential / Plugins
-- TODO Angular4 Serialization Plugin
-  - HttpClient.get<Foo>(...);  
-  - The problem is the generic type is erased.  We'd have to pass the type - integrating into the existing API would be difficult or impossible.  Unless the HttpInterceptor could ... do something cool.
-
-
 ## Contributing
 
 - Fork and/or clone repo.  
