@@ -1,4 +1,4 @@
-Parse JSON as typed instances.
+Parse JSON as typed instances.  
 
 ## Installation
 
@@ -6,6 +6,7 @@ Parse JSON as typed instances.
 
 ## Prereqs
 
+- TypeScript (for Decorator support)
 - Enable `emitDecoratorMetadata` and `experimentalDecorators` in `tsconfig.json`:
 
   ```json
@@ -77,37 +78,6 @@ let bars = <Bar[][]> TSON.parse(json, Bar);
 bars[0][0] instanceof Bar; // true
 ```
 
-## Getters and Setters
-
-```
-// -------------------------------------------------------------------------------------------------
-// TODO make easy getter/setter injection. 
-// for example:
-//
-// class A {
-//
-//   constructor(private _foo: string} {
-// 
-//   }
-//  
-//   get foo() { return this._foo; };
-//
-// }
-//
-// then TSON.parse('{"foo":"something"}'
-// will serialize into either "_foo" param or "foo" param.  if both are detected then ignore "_foo"?
-// this should be an optional config item probably
-// -------------------------------------------------------------------------------------------------
-```
-
-## Configuration
-
-- TODO Generic serialization when type information does not exist (defaults to true)
-- TODO Serialize Private Arguments via prefix (defaults to "_")
-- TODO Serialize extra JSON properties to class instance (defaults to true)
-
-
-
 ## Alternative Approach
 
 Another approach is to creating instances would be member injection which this project does not support. 
@@ -133,17 +103,9 @@ Tradeoffs and difficulties to field assignment:
 - Make changes and run linter `npm run lint`.  
 - Submit a Pull Request!
 
-You may need to install globals:
+For local testing, you may need to install globals:
 
 - `npm install mocha chai ts-node typings -g`
 - `typings install dt~mocha --global --save`
 - `typings install npm~chai --save`
 
-## Known Issues
-
-Ordering - Dependencies must come before use or they'll be undefined.  
-In webpack, this might not be avoidable.  
-What's the workaround? 
-See: https://github.com/Microsoft/TypeScript/issues/4114
-
-One workaround would be to use getters for ElementTypes - that's a last resort.  Could probably use a UnionType 
