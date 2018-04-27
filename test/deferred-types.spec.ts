@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { ConstructAs, TSON } from '../index';
 
-describe('Definition Order Workaround', () => {
+describe('Deferred Type Workaround', () => {
 
   // workaround for out of order issue
   // https://github.com/Microsoft/TypeScript/issues/4114

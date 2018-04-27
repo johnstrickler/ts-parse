@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Constructable, TSON } from '../index';
 
-describe('Extra Properties', () => {
+describe('Extra Properties (not defined in the constructor)', () => {
 
   @Constructable()
   class Baz {

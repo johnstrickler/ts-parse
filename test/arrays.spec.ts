@@ -43,7 +43,6 @@ describe('Typed Array Properties', () => {
     }
   }
 
-
   @Constructable()
   class Foo2 {
     constructor(public bars: Bar[]) {

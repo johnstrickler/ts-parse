@@ -1,7 +1,17 @@
 import { expect } from 'chai';
 import { TSON } from '../index';
 
-describe('Types', () => {
+describe('Type Coercion', () => {
+
+  class Foo {
+
+  }
+
+  class Bar {
+    constructor(public prop: string) {
+
+    }
+  }
 
   it('should serialize a string primitive from a string', () => {
     let string = TSON.parse('"foobar"', String);
@@ -77,6 +87,18 @@ describe('Types', () => {
   it('should serialize a Set instance', () => {
     let set = TSON.parse('[1,"a",2,"b"]', Set);
     expect(set instanceof Set).eq(true);
+  });
+
+  it('should serialize a null as a null (no zero-arg construction)', () => {
+    let foo = TSON.parse('null', Foo);
+    expect(foo instanceof Foo).eq(false);
+    expect(foo).eq(null);
+  });
+
+  it('should serialize a null as a null (no single-arg construction)', () => {
+    let foo = TSON.parse('null', Bar);
+    expect(foo instanceof Bar).eq(false);
+    expect(foo).eq(null);
   });
 
 });
