@@ -43,6 +43,8 @@ address instanceof Address; // true
 address.getCityStateZip(); // "Richmond, VA 23230"
 ```
 
+The constructor in this example uses accessibility modifiers on the constructor args so that a corresponding instance member is also created, [a nice feature of TypeScript](https://www.typescriptlang.org/docs/handbook/classes.html#parameter-properties).  
+
 ## Features
 
 - Serialize JSON or POJOs to actual class instances
